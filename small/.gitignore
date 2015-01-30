@@ -1,0 +1,4 @@
+/data/
+*.out
+/output.txt
+*.c~
