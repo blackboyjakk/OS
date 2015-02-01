@@ -32,7 +32,7 @@ main()
 
 			fprintf(fp2,"%s\n",oneword);
 			list = g_slist_append(list, oneword);
-						// display it on the monitor	//
+
 //			looking_hash(oneword,i);
 
 			c = fscanf(fp1,"%32[^A-Za-z]",temp);	// move cursor in file		//
