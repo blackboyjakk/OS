@@ -8,17 +8,18 @@
 
 
 main()
-{	//hash = g_hash_table_new(g_str_hash, g_str_equal);
+{	
+//	hash = g_hash_table_new(g_str_hash, g_str_equal);
 	GSList* list = g_slist_append(NULL, "START\n");
 
 	FILE *fp1,*fp2;
-	char name[64],*oneword,*temp;
+	char name[20],*oneword,tmp[10];
 	char c;
 	int i;
 	
 	fp2=fopen("output.txt","w");
 	
-	for(i=1;i<20;i++)
+	for(i=3;i<=5;i++)
 	{
 		sprintf(name,"data/file%d.txt",i);//แทน 1 ด้วย i	
 		if(!(fp1 = fopen(name,"r"))){
@@ -26,22 +27,27 @@ main()
 		}else;
 		
 		do {
-			oneword= g_malloc(sizeof(char)*20);
+			oneword= g_malloc(sizeof(char)*32);
 			c = fscanf(fp1,"%32[A-Za-z]",oneword);	// got one word from the file	//
+			if(c == EOF)break;
 			
-
+			int i;
+			for( i= 0; oneword[i]; i++){
+  				oneword[i] = tolower(oneword[i]);
+			}
+			if(g_slist_find_custom (list,oneword,(GCompareFunc)g_strcmp0)!=NULL)continue;
 			fprintf(fp2,"%s\n",oneword);
-			list = g_slist_append(list, oneword);
-
+			list = g_slist_insert_sorted(list,oneword,(GCompareFunc)g_strcmp0);
+			
 //			looking_hash(oneword,i);
 
-			c = fscanf(fp1,"%32[^A-Za-z]",temp);	// move cursor in file		//
-		} while (c != EOF);							// repeat until EOF		//
+			c = fscanf(fp1,"%32[^A-Za-z]",tmp);	// move cursor in file		//
+		} while (1);							// repeat until EOF		//
 		
 		fclose(fp1);
 	}
 	list = g_slist_append(list, "\nEND\n");
-	g_slist_foreach (list,(GFunc)printf,NULL);
+	g_slist_foreach (list,(GFunc)printf,"\n");
 
 	fclose(fp2);
 }
